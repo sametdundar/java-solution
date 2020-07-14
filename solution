@@ -1,0 +1,51 @@
+import java.util.Arrays; 
+
+public class NewMain {
+
+    static final int max = 256; 
+    
+    static int shortestSubString(String s) 
+    { 
+        int stringSize = s.length(); 
+  
+        // Farklı karakterleri say
+        int diffCount = 0; 
+  
+        boolean[] visited = new boolean[max]; 
+        Arrays.fill(visited, false); 
+        for (int i = 0; i < stringSize; i++) { 
+            if (visited[s.charAt(i)] == false) { 
+                visited[s.charAt(i)] = true; 
+                diffCount++; 
+            } 
+        } 
+ 
+        //Hepsini içeren en uzun stringi bul
+        int start = 0, start_index = -1; 
+        int min_len = Integer.MAX_VALUE; 
+  
+        int count = 0; 
+        int[] curr_count = new int[max]; 
+        for (int j = 0; j < stringSize; j++) { 
+            curr_count[s.charAt(j)]++; 
+  
+            if (curr_count[s.charAt(j)] == 1) 
+                count++; 
+  
+            if (count == diffCount) { 
+                while (curr_count[s.charAt(start)] > 1) { 
+                    if (curr_count[s.charAt(start)] > 1) 
+                        curr_count[s.charAt(start)]--; 
+                    start++; 
+                } 
+  
+                int len_window = j - start + 1; 
+                if (min_len > len_window) { 
+                    min_len = len_window; 
+                    start_index = start; 
+                } 
+            } 
+        } 
+        return s.substring(start_index, start_index + min_len).length(); 
+    } 
+}
